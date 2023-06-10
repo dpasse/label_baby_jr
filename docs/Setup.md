@@ -19,3 +19,5 @@ make run
 ```cmd
 make webpack-watch-dev
 ```
+- dumps to `../web/static`
+
