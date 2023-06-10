@@ -19,7 +19,7 @@ module.exports = {
         hints : false,
     },
     output: {
-        path: path.resolve('./app/static/bundles/'),
+        path: path.resolve('./web/static/bundles/'),
         filename: '[name].js',
     },
     plugins: [
