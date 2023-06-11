@@ -161,6 +161,6 @@ cython_debug/
 
 /node_modules
 /web/static/bundles
-/web/workspace/*/
+/workspace/*/
 
 webpack-stats.json
