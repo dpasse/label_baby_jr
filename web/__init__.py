@@ -7,21 +7,19 @@ from dotenv import load_dotenv
 from web.cache import cache
 from web.views import web, api
 
-from .containers import Container
+from .containers import ApiContainer
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-def create_app(config: Optional[dict] = None) -> Flask:
-    container = Container()
-    
+def create_app(config: Optional[dict] = None) -> Flask:    
     lb_app = Flask(__name__)
 
     if not config:
         config = cast(dict, lb_app.env)
 
-    lb_app.container = container
+    lb_app.container = ApiContainer()
     lb_app.register_blueprint(api, url_prefix='/api')
     lb_app.register_blueprint(web)
 

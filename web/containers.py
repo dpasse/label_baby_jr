@@ -4,7 +4,7 @@ from dependency_injector import containers, providers
 from .services.projects import WorkspaceService
 
 
-class Container(containers.DeclarativeContainer):
+class ApiContainer(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(modules=['.views.api'])
 
     project_service = providers.Factory(

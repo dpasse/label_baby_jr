@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request
 from dependency_injector.wiring import inject, Provide
 from http.client import HTTPException
 
-from ..containers import Container
+from ..containers import ApiContainer
 from ..services import WorkspaceService
 
 
@@ -33,7 +33,7 @@ def handle_exception(e):
 
 @api.route('/projects/', methods=['GET'])
 @inject
-def get_projects(project_service: WorkspaceService = Provide[Container.project_service]):
+def get_projects(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
     model = {
         'projects': project_service.get_all_projects(),
     }
@@ -43,7 +43,7 @@ def get_projects(project_service: WorkspaceService = Provide[Container.project_s
 
 @api.route('/projects/', methods=['POST'])
 @inject
-def create_project(project_service: WorkspaceService = Provide[Container.project_service]):
+def create_project(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
     request_data = request.get_json(force=True)
 
     settings = project_service.create(
