@@ -8,15 +8,18 @@ from ..operations.project import CreateProjectOperationArgs, \
                                  LoadProjectSettings
 
 
-class ProjectService():
-    def get_all_projects(self, workspace_directory: str) -> List[Dict[str, Any]]:
+class WorkspaceService():
+    def __init__(self, workspace_directory: str) -> None:
+        self._workspace_directory = workspace_directory
+
+    def get_all_projects(self) -> List[Dict[str, Any]]:
         operations = (
             LoadDataOperation(
                 LoadProjectSettings.create(project)
             )
             for project in (
-                os.path.join(workspace_directory, item)
-                for item in os.listdir(workspace_directory)
+                os.path.join(self._workspace_directory, item)
+                for item in os.listdir(self._workspace_directory)
             )
             if os.path.isdir(project)
         )
@@ -26,9 +29,9 @@ class ProjectService():
             for operation in operations
         ]
     
-    def create(self, workspace_directory: str, project_name: str) -> Dict[str, Any]:
+    def create(self, project_name: str) -> Dict[str, Any]:
         args = CreateProjectOperationArgs.create(
-            workspace_directory,
+            self._workspace_directory,
             project_name
         )
 

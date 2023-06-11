@@ -1,1 +1,1 @@
-from .projects import ProjectService
+from .projects import WorkspaceService

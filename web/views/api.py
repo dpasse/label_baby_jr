@@ -5,7 +5,7 @@ from dependency_injector.wiring import inject, Provide
 from http.client import HTTPException
 
 from ..containers import Container
-from ..services import ProjectService
+from ..services import WorkspaceService
 
 
 api = Blueprint('api', __name__, template_folder='templates')
@@ -32,24 +32,22 @@ def handle_exception(e):
     return jsonify(res), 500
 
 @api.route('/projects/', methods=['GET'])
-def get_projects():
-    projects = ProjectService().get_all_projects(
-        os.getenv('WORKSPACE_DIRECTORY')
-    )
-
+@inject
+def get_projects(project_service: WorkspaceService = Provide[Container.project_service]):
     model = {
-        'projects': projects,
+        'projects': project_service.get_all_projects(),
     }
 
     return jsonify(model)
 
 
 @api.route('/projects/', methods=['POST'])
-def create_project():
-    project_data = request.get_json(force=True)
-    settings = ProjectService().create(
-        os.getenv('WORKSPACE_DIRECTORY'),
-        project_data['name']
+@inject
+def create_project(project_service: WorkspaceService = Provide[Container.project_service]):
+    request_data = request.get_json(force=True)
+
+    settings = project_service.create(
+        request_data['name']
     )
 
     return jsonify(settings)
