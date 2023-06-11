@@ -1,6 +1,7 @@
 from typing import Dict, Any, List
 
 import os
+import uuid
 
 from dataclasses import dataclass
 from .abstracts import AbstractOperation
@@ -37,6 +38,7 @@ class CreateProjectOperationArgs:
 
     def create_settings(self) -> Dict[str, Any]:
         return {
+            'id': str(uuid.uuid4()),
             'name': self.name
         }
     
@@ -48,10 +50,10 @@ class CreateProjectOperation(AbstractOperation[Dict[str, Any]]):
     def __init__(self, args: CreateProjectOperationArgs) -> None:
         self._args = args
 
-    def execute(self) -> Dict[str, Any]:        
+    def execute(self) -> Dict[str, Any]:
         working_directory = self._args.complete_project_path
         if os.path.exists(working_directory):
-            raise SystemError(message='Workspace already exists.')
+            raise SystemError('Workspace already exists.')
 
         settings = self._args.create_settings()
 
