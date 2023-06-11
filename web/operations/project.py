@@ -23,9 +23,9 @@ class CreateProjectSettings(SaveDataArgs):
     @staticmethod
     def create(working_directory: str, data: Dict[str, Any]):
         return CreateProjectSettings(working_directory, 'settings.json', data)
-
+    
 @dataclass()
-class CreateProjectOperationArgs:
+class ProjectOperationArgs:
     working_directory: str
     name: str
 
@@ -35,19 +35,27 @@ class CreateProjectOperationArgs:
             self.working_directory,
             self.name
         )
-
-    def create_settings(self) -> Dict[str, Any]:
-        return {
-            'id': str(uuid.uuid4()),
-            'name': self.name
-        }
     
     @staticmethod
     def create(working_directory: str, project_name: str):
-        return CreateProjectOperationArgs(working_directory, project_name)
+        return ProjectOperationArgs(working_directory, project_name)
+
+class DeleteProjectOperation(AbstractOperation[None]):
+    def __init__(self, args: ProjectOperationArgs) -> None:
+        self._args = args
+
+    def execute(self) -> None:
+        working_directory = self._args.complete_project_path
+
+        if not os.path.exists(working_directory):
+            return
+        
+        DeleteDirectoryOperation(
+            DeleteDirectoryArgs.create(working_directory)
+        ).execute()
 
 class CreateProjectOperation(AbstractOperation[Dict[str, Any]]):
-    def __init__(self, args: CreateProjectOperationArgs) -> None:
+    def __init__(self, args: ProjectOperationArgs) -> None:
         self._args = args
 
     def execute(self) -> Dict[str, Any]:
@@ -55,7 +63,10 @@ class CreateProjectOperation(AbstractOperation[Dict[str, Any]]):
         if os.path.exists(working_directory):
             raise SystemError('Workspace already exists.')
 
-        settings = self._args.create_settings()
+        settings = {
+            'id': str(uuid.uuid4()),
+            'name': self._args.name,
+        }
 
         try:
             operations: List[AbstractOperation[None]] = [
@@ -73,9 +84,7 @@ class CreateProjectOperation(AbstractOperation[Dict[str, Any]]):
             for operation in operations:
                 operation.execute()
         except:
-            DeleteDirectoryOperation(
-                DeleteDirectoryArgs.create(working_directory)
-            ).execute()
+            DeleteProjectOperation(self._args).execute()
 
             raise
 

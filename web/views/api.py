@@ -20,6 +20,8 @@ def heartbeat():
 
 @api.errorhandler(Exception)
 def handle_exception(e):
+    print(e)
+
     if isinstance(e, HTTPException):
         return e
 
@@ -51,3 +53,16 @@ def create_project(project_service: WorkspaceService = Provide[ApiContainer.proj
     )
 
     return jsonify(settings)
+
+
+@api.route('/projects/', methods=['DELETE'])
+@inject
+def delete_project(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
+    request_data = request.get_json(force=True)
+    project_service.delete(
+        request_data['name']
+    )
+
+    return jsonify({
+        'status': 'deleted'
+    })

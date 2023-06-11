@@ -3,8 +3,9 @@ from typing import List, Dict, Any
 import os
 
 from ..operations.data import LoadDataOperation
-from ..operations.project import CreateProjectOperationArgs, \
+from ..operations.project import ProjectOperationArgs, \
                                  CreateProjectOperation, \
+                                 DeleteProjectOperation, \
                                  LoadProjectSettings
 
 
@@ -30,9 +31,17 @@ class WorkspaceService():
         ]
     
     def create(self, project_name: str) -> Dict[str, Any]:
-        args = CreateProjectOperationArgs.create(
+        args = ProjectOperationArgs.create(
             self._workspace_directory,
             project_name
         )
 
         return CreateProjectOperation(args).execute()
+    
+    def delete(self, project_name: str) -> None:
+        args = ProjectOperationArgs.create(
+            self._workspace_directory,
+            project_name
+        )
+
+        DeleteProjectOperation(args).execute()
