@@ -27,18 +27,18 @@ class CreateProjectSettings(SaveDataArgs):
 @dataclass()
 class ProjectOperationArgs:
     working_directory: str
-    name: str
+    id: str
 
     @property
     def complete_project_path(self) -> str:
-        return get_project_path_from_name(
+        return os.path.join(
             self.working_directory,
-            self.name
+            self.id
         )
     
     @staticmethod
-    def create(working_directory: str, project_name: str):
-        return ProjectOperationArgs(working_directory, project_name)
+    def create(working_directory: str, id: str):
+        return ProjectOperationArgs(working_directory, id)
 
 class DeleteProjectOperation(AbstractOperation[None]):
     def __init__(self, args: ProjectOperationArgs) -> None:
@@ -54,8 +54,18 @@ class DeleteProjectOperation(AbstractOperation[None]):
             DeleteDirectoryArgs.create(working_directory)
         ).execute()
 
+@dataclass()
+class CreateProjectOperationArgs(ProjectOperationArgs):
+    name: str
+
+    @staticmethod
+    def create(working_directory: str, name: str):
+        id = str(uuid.uuid4())
+        return CreateProjectOperationArgs(working_directory, id, name)
+
+
 class CreateProjectOperation(AbstractOperation[Dict[str, Any]]):
-    def __init__(self, args: ProjectOperationArgs) -> None:
+    def __init__(self, args: CreateProjectOperationArgs) -> None:
         self._args = args
 
     def execute(self) -> Dict[str, Any]:
@@ -64,7 +74,7 @@ class CreateProjectOperation(AbstractOperation[Dict[str, Any]]):
             raise SystemError('Workspace already exists.')
 
         settings = {
-            'id': str(uuid.uuid4()),
+            'id': self._args.id,
             'name': self._args.name,
         }
 

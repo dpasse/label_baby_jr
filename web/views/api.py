@@ -55,13 +55,10 @@ def create_project(project_service: WorkspaceService = Provide[ApiContainer.proj
     return jsonify(settings)
 
 
-@api.route('/projects/', methods=['DELETE'])
+@api.route('/projects/<identifier>/', methods=['DELETE'])
 @inject
-def delete_project(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
-    request_data = request.get_json(force=True)
-    project_service.delete(
-        request_data['name']
-    )
+def delete_project(identifier: str, project_service: WorkspaceService = Provide[ApiContainer.project_service]):
+    project_service.delete(identifier)
 
     return jsonify({
         'status': 'deleted'

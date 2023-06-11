@@ -4,6 +4,7 @@ import os
 
 from ..operations.data import LoadDataOperation
 from ..operations.project import ProjectOperationArgs, \
+                                 CreateProjectOperationArgs, \
                                  CreateProjectOperation, \
                                  DeleteProjectOperation, \
                                  LoadProjectSettings
@@ -31,17 +32,17 @@ class WorkspaceService():
         ]
     
     def create(self, project_name: str) -> Dict[str, Any]:
-        args = ProjectOperationArgs.create(
+        args = CreateProjectOperationArgs.create(
             self._workspace_directory,
             project_name
         )
 
         return CreateProjectOperation(args).execute()
     
-    def delete(self, project_name: str) -> None:
+    def delete(self, id: str) -> None:
         args = ProjectOperationArgs.create(
             self._workspace_directory,
-            project_name
+            id
         )
 
         DeleteProjectOperation(args).execute()
