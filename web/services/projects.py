@@ -1,24 +1,31 @@
 from typing import List, Dict, Any
 
 import os
-from .repositories import filesystem as db
+from ..repositories.filesystem import Workspace, create_new_project_workspace
 
 
 class ProjectService():
-    def __init__(self, working_directory: str) -> None:
-        self._working_directory = working_directory
-
-    def get(self) -> List[Dict[str, Any]]:
-        projects: List[Dict[str, Any]] = []
-        for project_directory in db.get_directories(self._working_directory):
-            settings = db.load_data(
-                os.path.join(project_directory, 'settings.json')
+    def get_all(self, workspace_directory: str) -> List[Dict[str, Any]]:
+        directories = (
+            project
+            for project in (
+                os.path.join(workspace_directory, item)
+                for item in os.listdir(workspace_directory)
             )
+            if os.path.isdir(project)
+        )
 
-            settings.update({
-                'path': project_directory,
-            })
-
+        projects: List[Dict[str, Any]] = []
+        for project_directory in directories:
+            settings = Workspace(project_directory).load_data('settings.json')
             projects.append(settings)
 
         return projects
+    
+    def create(self, workspace_directory: str, name: str) -> Dict[str, Any]:
+        new_project_workspace = create_new_project_workspace(
+            name,
+            workspace_directory
+        )
+
+        return new_project_workspace.create()
