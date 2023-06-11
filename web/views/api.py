@@ -1,8 +1,10 @@
 import os
 
 from flask import Blueprint, jsonify, request
+from dependency_injector.wiring import inject, Provide
 from http.client import HTTPException
 
+from ..containers import Container
 from ..services import ProjectService
 
 
@@ -31,7 +33,7 @@ def handle_exception(e):
 
 @api.route('/projects/', methods=['GET'])
 def get_projects():
-    projects = ProjectService().get_all(
+    projects = ProjectService().get_all_projects(
         os.getenv('WORKSPACE_DIRECTORY')
     )
 
@@ -40,6 +42,7 @@ def get_projects():
     }
 
     return jsonify(model)
+
 
 @api.route('/projects/', methods=['POST'])
 def create_project():
