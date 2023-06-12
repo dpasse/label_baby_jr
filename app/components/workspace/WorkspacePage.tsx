@@ -40,6 +40,11 @@ export function WorkspacePage(): JSX.Element {
       <bs.Row md={4}>
         { cards }
       </bs.Row>
+      <bs.Row className="m-3">
+        <bs.Col md={{ span: 6, offset: 3 }}>
+          <bs.Button style={{ "width": "100%" }}>New Project</bs.Button>
+        </bs.Col>
+      </bs.Row>
     </bs.Container>
   );
 }
