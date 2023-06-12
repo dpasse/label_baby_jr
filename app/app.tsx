@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { WorkspacePage } from './components/workspace';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/styles.scss';
 
 const element = document.getElementById('app') as HTMLElement;
