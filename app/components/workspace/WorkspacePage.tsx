@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ICreateProjectArgs, IProject } from '../../common/types';
-import { WorkspaceService } from '../../services'
-
+import { WorkspaceService } from '../../services';
 import { CreateProjectModal } from './CreateProjectModal';
 
 import * as bs from 'react-bootstrap';
@@ -42,7 +42,9 @@ export function WorkspacePage(): JSX.Element {
       <bs.Col key={ row.id }>
         <bs.Card className="p-3 m-3">
           <bs.Card.Body>
-            <bs.Card.Title>{ row.name }</bs.Card.Title>
+            <bs.Card.Title>
+              <Link to={ `/projects/${row.id}/` }>{ row.name }</Link>
+            </bs.Card.Title>
           </bs.Card.Body>
         </bs.Card>
       </bs.Col>
