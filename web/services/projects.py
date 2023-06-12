@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 import os
 
@@ -14,22 +14,30 @@ class WorkspaceService():
     def __init__(self, workspace_directory: str) -> None:
         self._workspace_directory = workspace_directory
 
+    def get_project(self, identifier: str) -> Optional[Dict[str, Any]]:
+        workspace_path = os.path.join(self._workspace_directory, identifier)
+
+        if not os.path.exists(workspace_path):
+            return None
+        
+        if not os.path.isdir(workspace_path):
+            return None
+
+        args = LoadProjectSettings.create(
+            os.path.join(self._workspace_directory, identifier)
+        )
+
+        return LoadDataOperation(args).execute()
+
     def get_all_projects(self) -> List[Dict[str, Any]]:
         operations = (
-            LoadDataOperation(
-                LoadProjectSettings.create(project)
-            )
-            for project in (
-                os.path.join(self._workspace_directory, item)
-                for item in os.listdir(self._workspace_directory)
-            )
-            if os.path.isdir(project)
+            self.get_project(identifier)
+            for identifier in os.listdir(self._workspace_directory)
         )
         
-        return [
-            operation.execute()
-            for operation in operations
-        ]
+        return list(
+            filter(lambda op: not op is None, operations)
+        )
     
     def create(self, project_name: str) -> Dict[str, Any]:
         args = CreateProjectOperationArgs.create(

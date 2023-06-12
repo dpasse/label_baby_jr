@@ -14,19 +14,17 @@
       "strictNullChecks": true,
       "noUncheckedIndexedAccess": true,
       "allowSyntheticDefaultImports": true,
-  
+      
       "rootDirs": [
         "app"
       ],
-  
-      "types": ["node"],
       "typeRoots": [
         "node_modules/@types",
       ],
     },
     "exclude": [
       "env",
-      "web",
       "node_modules",
     ],
+    "lib": ["ES2015", "DOM"]
   }

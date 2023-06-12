@@ -10,7 +10,6 @@ from .directories import CreateDirectoryArgs, \
                          CreateDirectoryOperation, \
                          DeleteDirectoryArgs, \
                          DeleteDirectoryOperation
-from ..common.utils import get_project_path_from_name
 
 @dataclass()
 class LoadProjectSettings(LoadDataArgs):

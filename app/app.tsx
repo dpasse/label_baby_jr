@@ -2,7 +2,7 @@ import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { HomePage } from './home/HomePage';
+import { WorkspacePage } from './components/workspace';
 
 import './scss/styles.scss';
 
@@ -13,7 +13,7 @@ root.render(
   <StrictMode>
     <Router>
       <Routes>
-        <Route index={true} element={<HomePage />} />
+        <Route index={true} element={<WorkspacePage />} />
       </Routes>
     </Router>
   </StrictMode>

@@ -1,7 +1,7 @@
 var path          = require('path');
 var webpack       = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker')
-var Dotenv = require('dotenv-webpack')
+var Dotenv        = require('dotenv-webpack')
 
 module.exports = {
     context: __dirname,

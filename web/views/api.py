@@ -1,5 +1,3 @@
-import os
-
 from flask import Blueprint, jsonify, request
 from dependency_injector.wiring import inject, Provide
 from http.client import HTTPException
@@ -24,24 +22,33 @@ def handle_exception(e):
 
     if isinstance(e, HTTPException):
         return e
+    
+    code = 500
+    message = e.message if hasattr(e, 'message') else 'Something went really wrong!'
 
     res = {
-        'code': 500,
+        'code': code,
         'errorType': 'Internal Server Error',
-        'errorMessage': e.message if hasattr(e, 'message') else 'Something went really wrong!'
+        'errorMessage': message
     }
     
-    return jsonify(res), 500
+    return jsonify(res), code
+
+@api.route('/projects/<identifier>/', methods=['GET'])
+@inject
+def get_project(identifier: str, project_service: WorkspaceService = Provide[ApiContainer.project_service]):
+    model = project_service.get_project(identifier)
+    if model is None:
+        return jsonify({}), 404
+
+    return jsonify(model)
 
 @api.route('/projects/', methods=['GET'])
 @inject
 def get_projects(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
-    model = {
-        'projects': project_service.get_all_projects(),
-    }
-
-    return jsonify(model)
-
+    return jsonify(
+        project_service.get_all_projects()
+    )
 
 @api.route('/projects/', methods=['POST'])
 @inject
