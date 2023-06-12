@@ -1,7 +1,8 @@
 var path          = require('path');
 var webpack       = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker')
-var Dotenv        = require('dotenv-webpack')
+
+require('dotenv').config({ path: './.env' }); 
 
 module.exports = {
     context: __dirname,
@@ -23,7 +24,9 @@ module.exports = {
         filename: '[name].js',
     },
     plugins: [
-        new Dotenv(),
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(process.env),
+        }),
         new BundleTracker({ filename: './webpack-stats.json' }),
     ],
     module: {

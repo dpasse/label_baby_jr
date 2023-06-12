@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-console.log(process.env)
-
 const config = {
-  baseURL: 'http://127.0.0.1:5000/api/',
+  baseURL: process.env.API_ROOT,
   headers: {
     'Content-type': 'application/json'
   },
