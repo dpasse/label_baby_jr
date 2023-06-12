@@ -1,14 +1,29 @@
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { IProject } from '../../common/types';
+import { ICreateProjectArgs, IProject } from '../../common/types';
 import { WorkspaceService } from '../../services'
+
+import { CreateProjectModal } from './CreateProjectModal';
 
 import * as bs from 'react-bootstrap';
 
 const workspaceService = new WorkspaceService();
 
+function sort(projects: IProject[]): IProject[] {
+  return _.orderBy(projects, (item) => item.name.toLowerCase(), 'asc');
+}
+
 export function WorkspacePage(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [projects, setProjects] = useState<IProject[]>([]);
+
+  const handleCreateNewProjectOnClickEvent = (args: ICreateProjectArgs): Promise<void> => {
+    setLoading(true);
+    return workspaceService.create(args).then((project) => {
+      setProjects(sort([...projects, project]));
+      setLoading(false);
+    });
+  };
 
   useEffect(() => {
     if (loading) {
@@ -17,8 +32,7 @@ export function WorkspacePage(): JSX.Element {
 
     setLoading(true);
     workspaceService.getAll().then((response) => {
-      setProjects(response);
-
+      setProjects(sort(response));
       setLoading(false);
     });
   }, []);
@@ -42,7 +56,7 @@ export function WorkspacePage(): JSX.Element {
       </bs.Row>
       <bs.Row className="m-3">
         <bs.Col md={{ span: 6, offset: 3 }}>
-          <bs.Button style={{ "width": "100%" }}>New Project</bs.Button>
+          <CreateProjectModal handleSubmit={ handleCreateNewProjectOnClickEvent } />
         </bs.Col>
       </bs.Row>
     </bs.Container>
