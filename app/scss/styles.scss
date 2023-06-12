@@ -1,6 +1,19 @@
 header {
+    height: 100px;
     box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%);
     margin-bottom: 30px;
     position: relative;
     padding: 10px;
+    overflow: hidden;
+}
+
+header .logo {
+    position: absolute;
+    top: -15px;
+    width: 180px;
+}
+
+header .title {
+    text-align: center;
+    width: 100%;
 }

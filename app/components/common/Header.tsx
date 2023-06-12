@@ -9,8 +9,9 @@ export function Header(): JSX.Element {
         <header ref={header}>
             <nav className='navbar navbar-expand-lg'>
                 <Link to="/" className='navbar-brand'>
-                    <img src={ image } style={{ width: '75px', marginLeft: "25px" }} />
+                    <img className='logo' src={ image } />
                 </Link>
+                <h1 className="title">Label Baby Jr.</h1>
             </nav>
         </header>
     );

@@ -1,7 +1,12 @@
-.delete-project {
+.project .delete-project {
+    display: none;
     position: absolute;
     cursor: pointer;
     top: -25px;
     right: -25px;
-    font-size: 16px;
+    font-size: 18px;
+}
+
+.project:hover .delete-project {
+    display: block;
 }
