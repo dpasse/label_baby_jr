@@ -14,11 +14,12 @@
       "strictNullChecks": true,
       "noUncheckedIndexedAccess": true,
       "allowSyntheticDefaultImports": true,
-      
+
       "rootDirs": [
         "app"
       ],
       "typeRoots": [
+        "@types",
         "node_modules/@types",
       ],
     },

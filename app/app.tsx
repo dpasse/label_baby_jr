@@ -2,6 +2,7 @@ import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import { Header } from './components/common';
 import { WorkspacePage } from './components/workspace';
 import { ProjectPage } from './components/project';
 
@@ -24,6 +25,7 @@ const ProjectsPage = () => {
 root.render(
   <StrictMode>
     <Router>
+      <Header />
       <Routes>
         <Route index={true} element={<WorkspacePage />} />
         <Route path='/projects/*' element={ <ProjectsPage /> } />

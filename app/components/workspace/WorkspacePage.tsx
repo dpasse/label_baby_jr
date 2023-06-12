@@ -8,6 +8,8 @@ import { Loading } from '../common';
 
 import * as bs from 'react-bootstrap';
 
+import '../../scss/workspace.scss';
+
 const workspaceService = new WorkspaceService();
 
 function sort(projects: IProject[]): IProject[] {
@@ -62,7 +64,7 @@ export function WorkspacePage(): JSX.Element {
           <bs.Card.Body>
             <bs.Card.Title style={{ position: "relative" }}>
               <Link to={ `/projects/${row.id}/` }>{ row.name }</Link>
-              <em style={{ position: 'absolute', cursor: "pointer", top: "-25px", right: "-25px", fontSize: "16px" }} onClick={ () => handleDeleteProjectOnClickEvent(row.id) }>
+              <em className="delete-project" onClick={ () => handleDeleteProjectOnClickEvent(row.id) }>
                 <i className="bi bi-trash"></i>
               </em>
             </bs.Card.Title>
