@@ -43,13 +43,6 @@ def get_project(identifier: str, project_service: WorkspaceService = Provide[Api
 
     return jsonify(model)
 
-@api.route('/projects/', methods=['GET'])
-@inject
-def get_projects(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
-    return jsonify(
-        project_service.get_all_projects()
-    )
-
 @api.route('/projects/', methods=['POST'])
 @inject
 def create_project(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
@@ -61,6 +54,12 @@ def create_project(project_service: WorkspaceService = Provide[ApiContainer.proj
 
     return jsonify(settings)
 
+@api.route('/projects/', methods=['GET'])
+@inject
+def get_projects(project_service: WorkspaceService = Provide[ApiContainer.project_service]):
+    return jsonify(
+        project_service.get_all_projects()
+    )
 
 @api.route('/projects/<identifier>/', methods=['DELETE'])
 @inject
