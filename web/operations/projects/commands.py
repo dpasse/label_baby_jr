@@ -11,6 +11,8 @@ from ..data.actions import LoadDataArgs, SaveDataArgs
 
 class ProjectFile(enum.Enum):
     SETTINGS = 'settings.json'
+    ENTITIES = 'entities.json'
+    RELATIONS = 'relations.json'
 
     def __str__(self):
         return str(self.value)
@@ -18,18 +20,12 @@ class ProjectFile(enum.Enum):
 class GetLoadProjectDataCommand(LoadDataArgs):
     @staticmethod
     def create(working_directory: str, project_file: ProjectFile):
-        if project_file == ProjectFile.SETTINGS:
-            return LoadDataArgs(working_directory, str(project_file))
-        
-        raise SystemError('file not implemented.')
+        return LoadDataArgs(working_directory, str(project_file))
     
 class GetCreateProjectDataCommand(LoadDataArgs):
     @staticmethod
     def create(working_directory: str, project_file: ProjectFile, data: Dict[str, Any]):
-        if project_file == ProjectFile.SETTINGS:
-            return SaveDataArgs(working_directory, str(project_file), data)
-        
-        raise SystemError('file not implemented.')
+        return SaveDataArgs(working_directory, str(project_file), data)
     
 @dataclass()
 class ProjectOperationArgs:

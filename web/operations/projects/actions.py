@@ -52,6 +52,12 @@ class CreateProjectOperation(AbstractOperation[Dict[str, Any]]):
                 ),
                 SaveDataOperation(
                     GetCreateProjectDataCommand.create(working_directory, ProjectFile.SETTINGS, settings),
+                ),
+                SaveDataOperation(
+                    GetCreateProjectDataCommand.create(working_directory, ProjectFile.ENTITIES, {}),
+                ),
+                SaveDataOperation(
+                    GetCreateProjectDataCommand.create(working_directory, ProjectFile.RELATIONS, {}),
                 )
             ]
 
