@@ -3,6 +3,7 @@ from typing import Dict, Any
 import os
 import json
 
+from ...common.exceptions import NotFoundError
 from ..common import AbstractOperation
 from .commands import LoadDataArgs, \
                       SaveDataArgs
@@ -14,7 +15,7 @@ class LoadDataOperation(AbstractOperation[Dict[str, Any]]):
 
     def execute(self) -> Dict[str, Any]:
         if not os.path.exists(self._args.working_directory):
-            raise SystemError(message='Workspace does not exist.')
+            raise NotFoundError(message='Workspace does not exist.')
         
         file_path = os.path.join(self._args.working_directory, self._args.file_name)
         with open(file_path, 'r', encoding='utf8') as input_file:
@@ -26,7 +27,7 @@ class SaveDataOperation(AbstractOperation[None]):
 
     def execute(self) -> None:
         if not os.path.exists(self._args.working_directory):
-            raise SystemError(message='Workspace does not exist.')
+            raise NotFoundError(message='Workspace does not exist.')
         
         file_path = os.path.join(self._args.working_directory, self._args.file_name)
         with open(file_path, 'w', encoding='utf8') as output_file:

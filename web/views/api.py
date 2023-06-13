@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from dependency_injector.wiring import inject, Provide
 from http.client import HTTPException
 
+from ..common.exceptions import NotFoundError
 from ..containers import ApiContainer
 from ..services import WorkspaceService
 
@@ -24,11 +25,13 @@ def handle_exception(e):
         return e
     
     code = 500
+    if isinstance(e, NotFoundError):
+        code = 404
+    
     message = e.message if hasattr(e, 'message') else 'Something went really wrong!'
 
     res = {
         'code': code,
-        'errorType': 'Internal Server Error',
         'errorMessage': message
     }
     
@@ -39,7 +42,7 @@ def handle_exception(e):
 def get_project(identifier: str, project_service: WorkspaceService = Provide[ApiContainer.project_service]):
     model = project_service.get_project(identifier)
     if model is None:
-        return jsonify({}), 404
+        raise NotFoundError(message="Project not found")
 
     return jsonify(model)
 
