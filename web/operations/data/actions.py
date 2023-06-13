@@ -3,19 +3,10 @@ from typing import Dict, Any
 import os
 import json
 
-from dataclasses import dataclass
+from ..common import AbstractOperation
+from .commands import LoadDataArgs, \
+                      SaveDataArgs
 
-from .abstracts import AbstractOperation
-
-
-@dataclass()
-class LoadDataArgs:
-    working_directory: str
-    file_name: str
-
-    @staticmethod
-    def create(working_directory: str, file_name: str):
-        return LoadDataArgs(working_directory, file_name)
 
 class LoadDataOperation(AbstractOperation[Dict[str, Any]]):
     def __init__(self, args: LoadDataArgs) -> None:
@@ -28,14 +19,6 @@ class LoadDataOperation(AbstractOperation[Dict[str, Any]]):
         file_path = os.path.join(self._args.working_directory, self._args.file_name)
         with open(file_path, 'r', encoding='utf8') as input_file:
             return json.loads(input_file.read())
-
-@dataclass()
-class SaveDataArgs(LoadDataArgs):
-    data: Dict[str, Any]
-
-    @staticmethod
-    def create(working_directory: str, file_name: str, data: Dict[str, Any]):
-        return SaveDataArgs(working_directory, file_name, data)
 
 class SaveDataOperation(AbstractOperation[None]):
     def __init__(self, args: SaveDataArgs) -> None:

@@ -78,9 +78,7 @@ export function WorkspacePage(): JSX.Element {
     <bs.Container>
       <bs.Row className="m-3 mb-5">
         <bs.Col md={{ span: 6, offset: 3 }}>
-          <CreateProjectModal
-            handleSubmit={ handleCreateNewProjectOnClickEvent }
-          />
+          <CreateProjectModal handleSubmit={ handleCreateNewProjectOnClickEvent } />
         </bs.Col>
       </bs.Row>
       <bs.Row md={4}>

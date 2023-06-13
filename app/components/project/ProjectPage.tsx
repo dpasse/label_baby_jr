@@ -2,12 +2,15 @@ import _ from 'lodash';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import * as bs from 'react-bootstrap';
+import '../../scss/project.scss';
+
 export function ProjectPage(): JSX.Element {
     const { projectId } = useParams();
 
     return (
-        <div>
-            hi, {projectId}
-        </div>
+        <bs.Container>
+            hi, { projectId }
+        </bs.Container>
     );
 }

@@ -3,11 +3,12 @@ from typing import List, Dict, Any, Optional
 import os
 
 from ..operations.data import LoadDataOperation
-from ..operations.project import ProjectOperationArgs, \
-                                 CreateProjectOperationArgs, \
-                                 CreateProjectOperation, \
-                                 DeleteProjectOperation, \
-                                 LoadProjectSettings
+from ..operations.projects import ProjectFile, \
+                                  GetLoadProjectDataCommand, \
+                                  ProjectOperationArgs, \
+                                  CreateProjectOperationArgs, \
+                                  CreateProjectOperation, \
+                                  DeleteProjectOperation
 
 
 class WorkspaceService():
@@ -22,9 +23,10 @@ class WorkspaceService():
         
         if not os.path.isdir(workspace_path):
             return None
-
-        args = LoadProjectSettings.create(
-            os.path.join(self._workspace_directory, identifier)
+        
+        args = GetLoadProjectDataCommand.create(
+            os.path.join(self._workspace_directory, identifier),
+            ProjectFile.SETTINGS
         )
 
         return LoadDataOperation(args).execute()

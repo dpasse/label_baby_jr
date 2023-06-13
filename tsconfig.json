@@ -19,7 +19,7 @@
         "app"
       ],
       "typeRoots": [
-        "@types",
+        "app/@types",
         "node_modules/@types",
       ],
     },
