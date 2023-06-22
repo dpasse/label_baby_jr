@@ -16,7 +16,10 @@ export function CreateProjectForm({ project, handleNameChange }: ICreateProjectP
   return (
     <div className="form-group">
         <bs.Form.Label htmlFor="project-name">Name:</bs.Form.Label>
-        <bs.Form.Control id="project-name" type="text" onChange={ handleNameChange } value={ project.name } />
+        <bs.Form.Control id="project-name"
+                         type="text"
+                         onChange={handleNameChange}
+                         value={project.name} />
     </div>
   );
 }

@@ -24,10 +24,7 @@ export function CreateProjectModal({ handleSubmit }: ICreateProjectModelProps): 
   };
 
   const handleProjectNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setProject({
-      ...project,
-      name: event.target.value
-    });
+    setProject({ ...project, name: event.target.value });
   };
 
   const handleCreateNewProjectOnClick = () => {
