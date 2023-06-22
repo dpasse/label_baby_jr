@@ -2,54 +2,54 @@ import React, { useState } from 'react';
 
 import { ICreateProjectArgs } from '../../common/types';
 
+import {
+  CreateProjectForm,
+  DEFAULT_CREATE_PROJECT_VALUES
+} from './CreateProjectForm';
+
 import * as bs from 'react-bootstrap';
 
-export interface ICreateProjectProps {
+export interface ICreateProjectModelProps {
   handleSubmit: (project: ICreateProjectArgs) => Promise<void>;
 }
 
-export function CreateProjectModal({ handleSubmit }: ICreateProjectProps): JSX.Element {
-  const [state, setState] = useState<string>('');
+export function CreateProjectModal({ handleSubmit }: ICreateProjectModelProps): JSX.Element {
+  const [project, setProject] = useState<ICreateProjectArgs>({ ...DEFAULT_CREATE_PROJECT_VALUES });
   const [showCreateProject, setShowCreateProject] = useState(false);
 
-  const handleNewProjectOnClick = () => setShowCreateProject(true);
-  const handleCloseNewProjectOnClick = () => {
+  const handleShowModalOnClick = () => setShowCreateProject(true);
+  const handleCloseModalOnClick = () => {
+    setProject({ ...DEFAULT_CREATE_PROJECT_VALUES });
     setShowCreateProject(false);
-    setState('');
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState(e.target.value);
-  }
+  const handleProjectNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setProject({
+      ...project,
+      name: event.target.value
+    });
+  };
 
   const handleCreateNewProjectOnClick = () => {
-    if (state === '') {
+    if (project.name === '') {
       return;
     }
 
-    const project: ICreateProjectArgs = {
-      name: state,
-    };
-
-    handleSubmit(project).then(() => {
-      setShowCreateProject(false);
-      setState('');
-    });
+    handleSubmit(project).then(handleCloseModalOnClick);
   };
 
   return (
     <>
-      <bs.Button style={{ "width": "100%" }} onClick={handleNewProjectOnClick}>New Project</bs.Button>
-      <bs.Modal show={showCreateProject} onHide={handleCloseNewProjectOnClick}>
+      <bs.Button style={{ "width": "100%" }} onClick={handleShowModalOnClick}>New Project</bs.Button>
+      <bs.Modal show={showCreateProject} onHide={handleCloseModalOnClick}>
         <bs.Modal.Header closeButton>
           <bs.Modal.Title>New Project</bs.Modal.Title>
         </bs.Modal.Header>
         <bs.Modal.Body>
-          <bs.Form.Label htmlFor="project-name">Name:</bs.Form.Label>
-          <bs.Form.Control id="project-name" type="text" onChange={ handleChange } value={ state }/>
+          <CreateProjectForm project={project} handleNameChange={handleProjectNameChange} />
         </bs.Modal.Body>
         <bs.Modal.Footer>
-          <bs.Button variant="secondary" onClick={handleCloseNewProjectOnClick}>Cancel</bs.Button>
+          <bs.Button variant="secondary" onClick={handleCloseModalOnClick}>Cancel</bs.Button>
           <bs.Button variant="primary" onClick={handleCreateNewProjectOnClick}>Create</bs.Button>
         </bs.Modal.Footer>
       </bs.Modal>
