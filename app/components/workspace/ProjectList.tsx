@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import * as bs from 'react-bootstrap';
 
 import { IProject } from '../../common/types';
-
-import * as bs from 'react-bootstrap';
 
 export interface IProjectListProps {
     projects: IProject[];
